@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { ethers, BigNumber } from "ethers"
 import { abi, contractAddresses } from "../constants/index"
+import { Box, Button, Flex, Input, Text } from "@chakra-ui/react"
 
 const MainMint = ({ accounts, setAccounts }) => {
     const [mintAmount, setMintAmount] = useState(1)
@@ -12,7 +13,9 @@ const MainMint = ({ accounts, setAccounts }) => {
             const signer = provider.getsigner()
             const contract = new ethers.Contract(contractAddresses, abi, signer)
             try {
-                const response = await contract.mint(BigNumber.from(mintAmount))
+                const response = await contract.mint(BigNumber.from(mintAmount), {
+                    value: ethers.utils.parseEther((0.02 * mintAmount).toString()),
+                })
                 console.log("response:", response)
             } catch (err) {
                 console.log("error", err)
@@ -31,25 +34,97 @@ const MainMint = ({ accounts, setAccounts }) => {
     }
 
     return (
-        <div>
-            <h1>RoboPunks</h1>
-            <p>
-                It's 2078. Can the RoboPunks NFT save humans from destructive rampant NFT
-                speculations? Mint RoboPunks to find out.
-            </p>
-            {isConnected ? (
+        <Flex justify="center" align="center" height="100vh" paddingBottom="150px">
+            <Box width="520px">
                 <div>
-                    <div>
-                        <button onClick={handleDecrement}>-</button>
-                        <input type="number" value={mintAmount} />
-                        <button onClick={handleIncrement}>+</button>
-                    </div>
-                    <button onClick={handleMint}>Mint Now</button>
+                    <Text fontSize="48px" textShadow="0 5px #000000">
+                        RoboPunksNFT
+                    </Text>
+                    <Text
+                        fontSize="30px"
+                        letterSpacing="-5.5%"
+                        fontFamily="VT323"
+                        textShadow="0 2px 2px #000000"
+                    >
+                        This website is for demo purposes only.
+                    </Text>
                 </div>
-            ) : (
-                <p>You must connect Metamask to Mint.</p>
-            )}
-        </div>
+
+                {isConnected ? (
+                    <div>
+                        <Flex justify="center" align="center">
+                            <Button
+                                backgroundColor="#008fd4"
+                                borderRadius="5px"
+                                boxShadow="0px 2px 2px 1px #0F0F0F"
+                                color="white"
+                                cursor="pointer"
+                                fontFamily="inherit"
+                                padding="15px"
+                                margin="10"
+                                onClick={handleDecrement}
+                            >
+                                {" "}
+                                -
+                            </Button>
+
+                            <Input
+                                readOnly
+                                fontFamily="inherit"
+                                width="100px"
+                                height="40px"
+                                textAlign="center"
+                                paddingLeft="19px"
+                                marginTop="10px"
+                                type="number"
+                                value={mintAmount}
+                            />
+
+                            <Button
+                                backgroundColor="#008fd4"
+                                borderRadius="5px"
+                                boxShadow="0px 2px 2px 1px #0F0F0F"
+                                color="white"
+                                cursor="pointer"
+                                fontFamily="inherit"
+                                padding="15px"
+                                margin="10"
+                                onClick={handleIncrement}
+                            >
+                                {" "}
+                                +
+                            </Button>
+                        </Flex>
+
+                        <Button
+                            backgroundColor="#008fd4"
+                            borderRadius="5px"
+                            boxShadow="0px 2px 2px 1px #0F0F0F"
+                            color="white"
+                            cursor="pointer"
+                            fontFamily="inherit"
+                            padding="15px"
+                            margin="10"
+                            onClick={handleMint}
+                        >
+                            Mint Now
+                        </Button>
+                    </div>
+                ) : (
+                    <Text
+                        marginTop="70px"
+                        fontSize="30px"
+                        letterSpacing="5.5%"
+                        fontFamily="VT323"
+                        textShadow="0 3px #000000"
+                        color="#008fd4"
+                    >
+                        Connect your wallet to mint.
+                    </Text>
+                )}
+            </Box>
+        </Flex>
     )
 }
+
 export default MainMint

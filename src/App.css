@@ -31,10 +31,10 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    buttom: 0;
+    bottom: 0;
     background-image: url("./assets/background/parallax-bg.gif");
     background-size: cover;
     background-repeat: no-repeat;
-    background-attachements: fixed;
+    background-attachments: fixed;
     background-position: 40% 40%;
 }
